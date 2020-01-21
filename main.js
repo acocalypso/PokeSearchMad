@@ -55,7 +55,7 @@ bot.on('message', function (user, userID, channelID, message, event) {
             console.log("Nix zu tun!");
 
             var sentToDiscord = {
-            'description': 'Bitte Pokemon angeben!!! Du Spasst!',
+            'description': 'Bitte Pokemon angeben!!!',
             'color': 15277667
             };
             bot.sendMessage({
