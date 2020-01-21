@@ -1,0 +1,21 @@
+{
+    "name": "PokeSearchMad",
+    "version": "1.0.0",
+    "keywords": [
+        "util",
+        "functional",
+        "server",
+        "client",
+        "browser"
+    ],
+    "author": "Aco",
+    "contributors": [],
+    "dependencies": {
+        "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
+        "fast-csv": "^4.0.2",
+        "fs": "0.0.1-security",
+        "moment": "^2.24.0",
+        "mysql2": "^2.1.0",
+        "sqlite3": "^4.1.1"
+    }
+}

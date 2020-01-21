@@ -1,0 +1,11 @@
+{ 
+	"token": "",
+	"cmdPrefix": "!",
+	"host": "",
+    "username": "",
+    "password": "",
+    "database": "",
+    "database_pokesearch": "",
+    "port": ""
+}
+
