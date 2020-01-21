@@ -1,7 +1,7 @@
 { 
-	"token": "",
-	"cmdPrefix": "!",
-	"host": "",
+    "token": "",
+    "cmdPrefix": "!",
+    "host": "",
     "username": "",
     "password": "",
     "database": "",
