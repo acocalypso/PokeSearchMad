@@ -1,7 +1,6 @@
 # PokeSearchMAD
 > Discord Bot to search for pokemon in the MAD DB
 
-[![NPM Version][npm-image]]
 
 ## Installation
 
@@ -17,11 +16,11 @@
 	"token": "",   //bot token
 	"cmdPrefix": "!", //prefix for discord bot command
 	"host": "", // your hostname (f.e localhost)
-    "username": "", //database username
-    "password": "", //database password
-    "database": "", //MAD database name
-    "database_pokesearch": "", //pokesearch database name
-    "port": "" //Mysql Port (default 3306)
+	"username": "", //database username
+	"password": "", //database password
+	"database": "", //MAD database name
+	"database_pokesearch": "", //pokesearch database name
+	"port": "" //Mysql Port (default 3306)
 }
 ```
 
