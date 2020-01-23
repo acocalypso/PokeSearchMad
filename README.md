@@ -15,6 +15,7 @@
 { 
 	"token": "",   //bot token
 	"cmdPrefix": "!", //prefix for discord bot command
+	"mainChannelID": "", //define channel where the command will work
 	"host": "", // your hostname (f.e localhost)
 	"username": "", //database username
 	"password": "", //database password
