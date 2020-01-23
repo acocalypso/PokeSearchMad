@@ -13,15 +13,19 @@
 
 ```sh
 { 
-	"token": "",   //bot token
-	"cmdPrefix": "!", //prefix for discord bot command
-	"mainChannelID": "", //define channel where the command will work
-	"host": "", // your hostname (f.e localhost)
-	"username": "", //database username
-	"password": "", //database password
-	"database": "", //MAD database name
-	"database_pokesearch": "", //pokesearch database name
-	"port": "" //Mysql Port (default 3306)
+  "token": "", //bot token
+  "cmdPrefix": "!", //prefix for discord command
+  "mainChannelID": "", //channel for the command
+  "maddb_host": "", //mad db hostname
+  "maddb_username": "", // mad db username
+  "maddb_password": "", // mad db password
+  "maddb_database": "", // mad db database
+  "maddb_dbport": "", // mad db port (3306)
+  "pokesearchdb_host": "", // pokesearch db hostname
+  "pokesearchdb_username": "", // pokesearch db username
+  "pokesearchdb_password": "", // pokesearch db password
+  "pokesearchdb_database": "", // pokesearch db database
+  "pokesearchdb_dbport": "" // pokesearch db port (3306)
 }
 ```
 
