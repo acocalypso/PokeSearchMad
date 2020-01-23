@@ -43,8 +43,8 @@ bot.on('ready', function(event){
 bot.on('message', function (user, userID, channelID, message, event) {
     
         if (message.substring(0, 1) === '!') {
-	    var args = message.substring(1).split(' ');
-        var cmd = args[0];
+	        var args = message.substring(1).split(' ');
+            var cmd = args[0];
             var argPkm = args[1];
             console.log("channelID: " + channelID);
             console.log("mainChannelID: " + config.mainChannelID);
@@ -96,7 +96,6 @@ bot.on('message', function (user, userID, channelID, message, event) {
     {       
                console.log("checkInDB called");
                connectionMAD.query('SELECT * FROM pokemon WHERE pokemon_id = ' + pkm_id + " AND disappear_time > UTC_TIMESTAMP();",function(err2,rows2,fields2){
-               console.log("row2_length: " + rows2.length);
 
                rows2.forEach(function (row2) {
 
@@ -130,6 +129,8 @@ bot.on('message', function (user, userID, channelID, message, event) {
                     to: channelID,
                     embed: sentToDiscord
                     });
+                //not really sure why else condition is not executed when rows2.length = 0
+                //need more investigation...
                } else {
                        console.log("No Pokemon found");
                        var sentToDiscord = {
