@@ -52,7 +52,6 @@ bot.on('message', function (user, userID, channelID, message, event) {
             validateDiscordArgs(argPkm);
 	}
          else{
-            console.log("Nix zu tun!");
 
             var sentToDiscord = {
             'description': 'Bitte Pokemon angeben!!!',
@@ -94,14 +93,18 @@ bot.on('message', function (user, userID, channelID, message, event) {
     
     function checkInDB(pkm_id, pkm_name)
     {       
-            const madquery = connectionMAD.query('SELECT * FROM pokemon WHERE pokemon_id = ' + pkm_id + " AND disappear_time > UTC_TIMESTAMP();",function(err2,rows2,fields2){
+               console.log("checkInDB called");
+               const madquery = connectionMAD.query('SELECT * FROM pokemon WHERE pokemon_id = ' + pkm_id + " AND disappear_time > UTC_TIMESTAMP();",function(err2,rows2,fields2){
                rows2.forEach(function(row2){
 
                //Rewrite JS Date to usefull format
-               const spawnDate = moment(row2.disappear_time).format();
-               const disappearTime = moment.utc(spawnDate).local().format("HH:mm:ss DD.MM.YYYY");
-               
-               console.log("disTime: " + disappearTime);
+               const spawnDate = row2.disappear_time;
+               var stillUtc = moment(spawnDate).format("YYYY-MM-DD HH:mm:ss");
+               var despawnTime = moment.utc(stillUtc).local().format("HH:mm:ss DD.MM.YYYY");
+                             
+               console.log("spawnDate: " + spawnDate);
+               console.log("stillUtc: " + stillUtc);
+               console.log("despawnTime: " + despawnTime);
 
                
                //Calculate IV
@@ -112,8 +115,9 @@ bot.on('message', function (user, userID, channelID, message, event) {
                const total_iv = iv.toFixed(2);             
                
                if(rows2.length > 0){
+               console.log("sending infos to Discord");
                var sentToDiscord = {
-               'description': 'Pokemon: ' + pkm_name + '\nWP: ' + row2.cp + '\nIV: ' + total_iv + '\nATK: ' + iv_atk + ' DEF: ' + iv_def + ' STA: ' + iv_sta + "\nVerfügbar bis: " + disappearTime,
+               'description': 'Pokemon: ' + pkm_name + '\nWP: ' + row2.cp + '\nIV: ' + total_iv + '\nATK: ' + iv_atk + ' DEF: ' + iv_def + ' STA: ' + iv_sta + "\nVerfügbar bis: " + despawnTime,
                'title': 'Google Maps',
                'url': 'http://maps.google.com/maps?q='+row2.latitude+','+row2.longitude,
                'color': 15277667
@@ -124,6 +128,7 @@ bot.on('message', function (user, userID, channelID, message, event) {
                 });
             }
             if(rows2.length < 0){
+                console.log("No Pokemon found");
                 var sentToDiscord = {
                'description': pkm_name + ' aktuell nicht vorhanden.',
                'title': 'UUPPPSSS!',
