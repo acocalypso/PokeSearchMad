@@ -46,21 +46,22 @@ bot.on('message', function (user, userID, channelID, message, event) {
 	var args = message.substring(1).split(' ');
         var cmd = args[0];
         var argPkm = args[1];
-
         if(cmd === 'pokesearch' && typeof argPkm !== "undefined"){
 
             validateDiscordArgs(argPkm);
 	}
          else{
-
-            var sentToDiscord = {
-            'description': 'Bitte Pokemon angeben!!!',
-            'color': 15277667
-            };
-            bot.sendMessage({
-            to: channelID,
-            embed: sentToDiscord
-            });
+            if(cmd === 'pokesearch' && typeof argPkm === "undefined")
+            {   
+                var sentToDiscord = {
+                'description': 'Bitte Pokemon angeben!!!',
+                'color': 15277667
+                };
+                bot.sendMessage({
+                to: channelID,
+                embed: sentToDiscord
+                });
+            }
             }
         }
     function validateDiscordArgs(pokemon)
@@ -94,9 +95,12 @@ bot.on('message', function (user, userID, channelID, message, event) {
     function checkInDB(pkm_id, pkm_name)
     {       
                console.log("checkInDB called");
-               const madquery = connectionMAD.query('SELECT * FROM pokemon WHERE pokemon_id = ' + pkm_id + " AND disappear_time > UTC_TIMESTAMP();",function(err2,rows2,fields2){
-               rows2.forEach(function(row2){
+               connectionMAD.query('SELECT * FROM pokemon WHERE pokemon_id = ' + pkm_id + " AND disappear_time > UTC_TIMESTAMP();",function(err2,rows2,fields2){
+               console.log("row2_length: " + rows2.length);
 
+               rows2.forEach(function (row2) {
+
+               if (rows2.length > 0) {
                //Rewrite JS Date to usefull format
                const spawnDate = row2.disappear_time;
                var stillUtc = moment(spawnDate).format("YYYY-MM-DD HH:mm:ss");
@@ -113,32 +117,31 @@ bot.on('message', function (user, userID, channelID, message, event) {
                const iv_sta = row2.individual_stamina;
                const iv = (iv_atk + iv_def + iv_sta) / 45 * 100;
                const total_iv = iv.toFixed(2);             
-               
-               if(rows2.length > 0){
+
+                    
                console.log("sending infos to Discord");
                var sentToDiscord = {
-               'description': 'Pokemon: ' + pkm_name + '\nWP: ' + row2.cp + '\nIV: ' + total_iv + '\nATK: ' + iv_atk + ' DEF: ' + iv_def + ' STA: ' + iv_sta + "\nVerfügbar bis: " + despawnTime,
-               'title': 'Google Maps',
-               'url': 'http://maps.google.com/maps?q='+row2.latitude+','+row2.longitude,
-               'color': 15277667
-               };
-                bot.sendMessage({
-                to: channelID,
-                embed: sentToDiscord
-                });
-            }
-            if(rows2.length < 0){
-                console.log("No Pokemon found");
-                var sentToDiscord = {
-               'description': pkm_name + ' aktuell nicht vorhanden.',
-               'title': 'UUPPPSSS!',
-               'color': 15277667
-               };
-                bot.sendMessage({
-                to: channelID,
-                embed: sentToDiscord
-                });
-            }
+                            'description': 'Pokemon: ' + pkm_name + '\nWP: ' + row2.cp + '\nIV: ' + total_iv + '\nATK: ' + iv_atk + ' DEF: ' + iv_def + ' STA: ' + iv_sta + "\nVerfügbar bis: " + despawnTime,
+                           'title': 'Google Maps',
+                           'url': 'http://maps.google.com/maps?q=' + row2.latitude + ',' + row2.longitude,
+                           'color': 15277667
+                    };
+               bot.sendMessage({
+                    to: channelID,
+                    embed: sentToDiscord
+                    });
+               } else {
+                       console.log("No Pokemon found");
+                       var sentToDiscord = {
+                           'description': pkm_name + ' aktuell nicht vorhanden.',
+                           'title': 'UUPPPSSS!',
+                           'color': 15277667
+                       };
+                       bot.sendMessage({
+                           to: channelID,
+                           embed: sentToDiscord
+                       });
+                   }
             });
             });
         };
