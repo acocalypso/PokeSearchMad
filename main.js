@@ -15,19 +15,19 @@ const bot = new Discord.Client({
 });
 
 const dbConfigMAD = {
-  'host': config.host,
-  'user': config.username,
-  'password': config.password,
-  'database': config.database,
-  'port': config.port
+    'host': config.maddb_host,
+    'user': config.maddb_username,
+    'password': config.maddb_password,
+    'database': config.maddb_database,
+    'port': config.maddb_port
 };
 
 const dbConfigPokesearch = {
-  'host': config.host,
-  'user': config.username,
-  'password': config.password,
-  'database': config.database_pokesearch,
-  'port': config.port
+    'host': config.pokesearchdb_host,
+    'user': config.pokesearchdb_username,
+    'password': config.pokesearchdb_password,
+    'database': config.pokesearchdb_database,
+    'port': config.pokesearchdb_dbport
 };
 
 console.log('Starting PokeSearch');

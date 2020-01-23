@@ -2,11 +2,15 @@
   "token": "",
   "cmdPrefix": "!",
   "mainChannelID": "",
-  "host": "",
-  "username": "",
-  "password": "",
-  "database": "",
-  "database_pokesearch": "",
-  "port": ""
+  "maddb_host": "",
+  "maddb_username": "",
+  "maddb_password": "",
+  "maddb_database": "",
+  "maddb_dbport": "",
+  "pokesearchdb_host": "",
+  "pokesearchdb_username": "",
+  "pokesearchdb_password": "",
+  "pokesearchdb_database": "",
+  "pokesearchdb_dbport": ""
 }
 
