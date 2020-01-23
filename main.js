@@ -43,10 +43,12 @@ bot.on('ready', function(event){
 bot.on('message', function (user, userID, channelID, message, event) {
     
         if (message.substring(0, 1) === '!') {
-	var args = message.substring(1).split(' ');
+	    var args = message.substring(1).split(' ');
         var cmd = args[0];
-        var argPkm = args[1];
-        if(cmd === 'pokesearch' && typeof argPkm !== "undefined"){
+            var argPkm = args[1];
+            console.log("channelID: " + channelID);
+            console.log("mainChannelID: " + config.mainChannelID);
+            if (cmd === 'pokesearch' && typeof argPkm !== "undefined" && channelID === config.mainChannelID) {
 
             validateDiscordArgs(argPkm);
 	}
@@ -68,16 +70,14 @@ bot.on('message', function (user, userID, channelID, message, event) {
     {
         if(pokemon !== ""){
             console.log("valPkm: " + pokemon);
-        connectionPokesearch.query('SELECT pkm_id, pkm_name from pokemon WHERE pkm_name LIKE "' + pokemon + '";', function(err1, rows1,fields1){
+            connectionPokesearch.query('SELECT pkm_id, pkm_name from pokemon WHERE pkm_name LIKE "' + pokemon + '";', function(err1, rows1,fields1){
             if(rows1.length > 0){    
             rows1.forEach(function(row1){
                     console.log(row1);
-                    const pkm_name = row1.pkm_name;
-                    const pkm_id = row1.pkm_id;
-                    checkInDB(pkm_id, pkm_name);
+                    checkInDB(row1.pkm_id, row1.pkm_name);
                 });
             }else{
-            var sentToDiscord = {
+                var sentToDiscord = {
                'description': 'Fehler in der Eingabe...\n' + pokemon + " ist kein bekanntes Pokemon." ,
                'title': 'UUPPPSSS!',
                'color': 15277667
@@ -134,7 +134,7 @@ bot.on('message', function (user, userID, channelID, message, event) {
                        console.log("No Pokemon found");
                        var sentToDiscord = {
                            'description': pkm_name + ' aktuell nicht vorhanden.',
-                           'title': 'UUPPPSSS!',
+                           'title': 'Sorry!',
                            'color': 15277667
                        };
                        bot.sendMessage({

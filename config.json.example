@@ -1,11 +1,12 @@
-{ 
-    "token": "",
-    "cmdPrefix": "!",
-    "host": "",
-    "username": "",
-    "password": "",
-    "database": "",
-    "database_pokesearch": "",
-    "port": ""
+{
+  "token": "",
+  "cmdPrefix": "!",
+  "mainChannelID": "",
+  "host": "",
+  "username": "",
+  "password": "",
+  "database": "",
+  "database_pokesearch": "",
+  "port": ""
 }
 
