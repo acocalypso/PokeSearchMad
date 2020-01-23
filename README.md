@@ -55,8 +55,11 @@ Verfügbar bis: 22:16:38 21.01.2020
 This Bot currently only support German Pokemon and its in an early development stage.
 
 ## ToDo
-- Fix conversation of despawn time to localtime
-- add more search parameter like iv, wp, level
+- ~~Fix conversation of despawn time to localtime~~
+- add more search parameter:
+  iv
+  wp
+  level
 
 
 ## Contributing
