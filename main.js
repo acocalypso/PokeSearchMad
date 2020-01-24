@@ -30,8 +30,6 @@ const dbConfigPokesearch = {
 
 console.log('Starting PokeSearch');
 
-const connectionMAD = mysql.createConnection(dbConfigMAD);
-const connectionPokesearch = mysql.createConnection(dbConfigPokesearch);
 
 bot.on('ready', function(event){
     console.log('Logged in as %s - %s\n', bot.username, bot.id);
@@ -68,6 +66,7 @@ bot.on('message', function (user, userID, channelID, message, event) {
     {
         if(pokemon !== ""){
             console.log("valPkm: " + pokemon);
+            const connectionPokesearch = mysql.createConnection(dbConfigPokesearch);
             connectionPokesearch.query('SELECT pkm_id, pkm_name from pokemon WHERE pkm_name LIKE "' + pokemon + '";', function(err1, rows1,fields1){
             if(rows1.length > 0){    
             rows1.forEach(function(row1){
@@ -92,6 +91,7 @@ bot.on('message', function (user, userID, channelID, message, event) {
     
     function checkInDB(pkm_id, pkm_name) {
         console.log("checkInDB called");
+        const connectionMAD = mysql.createConnection(dbConfigMAD);
         connectionMAD.query('SELECT * FROM pokemon WHERE pokemon_id = ' + pkm_id + " AND disappear_time > UTC_TIMESTAMP();", function (err2, rows2, fields2) {
             if (rows2.length > 0) {
                 rows2.forEach(function (row2) {
@@ -138,6 +138,7 @@ bot.on('message', function (user, userID, channelID, message, event) {
                     embed: sentToDiscord
                 });
             }
+            connectionMAD.end();
         });
 
     };
