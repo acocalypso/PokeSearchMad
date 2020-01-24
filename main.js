@@ -84,66 +84,63 @@ bot.on('message', function (user, userID, channelID, message, event) {
                 to: channelID,
                 embed: sentToDiscord
                 });
-            
-        }
+                }
+                connectionPokesearch.end();
             });
         }
     }
     
-    function checkInDB(pkm_id, pkm_name)
-    {       
-               console.log("checkInDB called");
-               connectionMAD.query('SELECT * FROM pokemon WHERE pokemon_id = ' + pkm_id + " AND disappear_time > UTC_TIMESTAMP();",function(err2,rows2,fields2){
+    function checkInDB(pkm_id, pkm_name) {
+        console.log("checkInDB called");
+        connectionMAD.query('SELECT * FROM pokemon WHERE pokemon_id = ' + pkm_id + " AND disappear_time > UTC_TIMESTAMP();", function (err2, rows2, fields2) {
+            if (rows2.length > 0) {
+                rows2.forEach(function (row2) {
 
-               rows2.forEach(function (row2) {
+                    //Rewrite JS Date to usefull format
+                    const spawnDate = row2.disappear_time;
+                    var stillUtc = moment(spawnDate).format("YYYY-MM-DD HH:mm:ss");
+                    var despawnTime = moment.utc(stillUtc).local().format("HH:mm:ss DD.MM.YYYY");
 
-               if (rows2.length > 0) {
-               //Rewrite JS Date to usefull format
-               const spawnDate = row2.disappear_time;
-               var stillUtc = moment(spawnDate).format("YYYY-MM-DD HH:mm:ss");
-               var despawnTime = moment.utc(stillUtc).local().format("HH:mm:ss DD.MM.YYYY");
-                             
-               console.log("spawnDate: " + spawnDate);
-               console.log("stillUtc: " + stillUtc);
-               console.log("despawnTime: " + despawnTime);
+                    console.log("spawnDate: " + spawnDate);
+                    console.log("stillUtc: " + stillUtc);
+                    console.log("despawnTime: " + despawnTime);
 
-               
-               //Calculate IV
-               const iv_atk = row2.individual_attack;
-               const iv_def = row2.individual_defense;
-               const iv_sta = row2.individual_stamina;
-               const iv = (iv_atk + iv_def + iv_sta) / 45 * 100;
-               const total_iv = iv.toFixed(2);             
 
-                    
-               console.log("sending infos to Discord");
-               var sentToDiscord = {
-                            'description': 'Pokemon: ' + pkm_name + '\nWP: ' + row2.cp + '\nIV: ' + total_iv + '\nATK: ' + iv_atk + ' DEF: ' + iv_def + ' STA: ' + iv_sta + "\nVerfügbar bis: " + despawnTime,
-                           'title': 'Google Maps',
-                           'url': 'http://maps.google.com/maps?q=' + row2.latitude + ',' + row2.longitude,
-                           'color': 15277667
+                    //Calculate IV
+                    const iv_atk = row2.individual_attack;
+                    const iv_def = row2.individual_defense;
+                    const iv_sta = row2.individual_stamina;
+                    const iv = (iv_atk + iv_def + iv_sta) / 45 * 100;
+                    const total_iv = iv.toFixed(2);
+
+
+                    console.log("sending infos to Discord");
+                    var sentToDiscord = {
+                        'description': 'Pokemon: ' + pkm_name + '\nWP: ' + row2.cp + '\nIV: ' + total_iv + '\nATK: ' + iv_atk + ' DEF: ' + iv_def + ' STA: ' + iv_sta + "\nVerfügbar bis: " + despawnTime,
+                        'title': 'Google Maps',
+                        'url': 'http://maps.google.com/maps?q=' + row2.latitude + ',' + row2.longitude,
+                        'color': 15277667
                     };
-               bot.sendMessage({
+                    bot.sendMessage({
+                        to: channelID,
+                        embed: sentToDiscord
+                    });
+                });
+            } else {
+                console.log("No Pokemon found");
+                var sentToDiscord = {
+                    'description': pkm_name + ' aktuell nicht vorhanden.',
+                    'title': 'Sorry!',
+                    'color': 15277667
+                };
+                bot.sendMessage({
                     to: channelID,
                     embed: sentToDiscord
-                    });
-                //not really sure why else condition is not executed when rows2.length = 0
-                //need more investigation...
-               } else {
-                       console.log("No Pokemon found");
-                       var sentToDiscord = {
-                           'description': pkm_name + ' aktuell nicht vorhanden.',
-                           'title': 'Sorry!',
-                           'color': 15277667
-                       };
-                       bot.sendMessage({
-                           to: channelID,
-                           embed: sentToDiscord
-                       });
-                   }
-            });
-            });
-        };
+                });
+            }
+        });
+
+    };
 },
 function(error, response)
 {
