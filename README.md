@@ -28,6 +28,12 @@
   "pokesearchdb_dbport": "" // pokesearch db port (3306)
 }
 ```
+Install node dependecies
+
+```
+npm install
+```
+
 
 Run the db import script
 
