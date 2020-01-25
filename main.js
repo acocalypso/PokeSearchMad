@@ -45,12 +45,13 @@ bot.on('message', function (user, userID, channelID, message, event) {
             console.log("channelID: " + channelID);
             console.log("mainChannelID: " + config.mainChannelID);
             if (cmd === 'pokesearch' && typeof argPkm !== "undefined" && channelID === config.mainChannelID) {
-
-            validateDiscordArgs(argPkm);
-	}
+                console.log("Starting input validation...");
+                validateDiscordArgs(argPkm);
+	        }
          else{
             if(cmd === 'pokesearch' && typeof argPkm === "undefined")
             {   
+                console.log("Nothing found, or wrong input");
                 var sentToDiscord = {
                 'description': 'Bitte Pokemon angeben!!!',
                 'color': 15277667
@@ -73,7 +74,8 @@ bot.on('message', function (user, userID, channelID, message, event) {
                     console.log(row1);
                     checkInDB(row1.pkm_id, row1.pkm_name);
                 });
-            }else{
+            } else {
+                console.log("No Pokemon entry found... unknown Pokemon");
                 var sentToDiscord = {
                'description': 'Fehler in der Eingabe...\n' + pokemon + " ist kein bekanntes Pokemon." ,
                'title': 'UUPPPSSS!',
@@ -94,6 +96,7 @@ bot.on('message', function (user, userID, channelID, message, event) {
         const connectionMAD = mysql.createConnection(dbConfigMAD);
         connectionMAD.query('SELECT * FROM pokemon WHERE pokemon_id = ' + pkm_id + " AND disappear_time > UTC_TIMESTAMP();", function (err2, rows2, fields2) {
             if (rows2.length > 0) {
+                console.log("Pokemon entries found... getting data...");
                 rows2.forEach(function (row2) {
 
                     //Rewrite JS Date to usefull format
