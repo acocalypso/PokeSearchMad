@@ -2,3 +2,4 @@ config.json
 package-lock.json
 nbproject/
 .vs/
+node_modules/

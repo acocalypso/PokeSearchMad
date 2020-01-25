@@ -17,29 +17,26 @@ let csvStream = fastcsv
     csvData.push(data);
   })
   .on("end", function() {
-    // remove the first line: header
-    //csvData.shift();
 
-    // create a new connection to the database
-    const connection = mysql.createConnection({
-      host: config.hostname,
-      user: config.username,
-      password: config.password,
-      database: config.database_pokesearch
-    });
-
+    const dbConfigPokesearch = {
+        'host': config.pokesearchdb_host,
+        'user': config.pokesearchdb_username,
+        'password': config.pokesearchdb_password,
+        'database': config.pokesearchdb_database,
+         'port': config.pokesearchdb_dbport
+      };
     // open the connection
-    connection.connect(error => {
+      dbConfigPokesearch.connect(error => {
       if (error) {
         console.error(error);
       } else {
         let create_table = "CREATE TABLE pokemon (id INT AUTO_INCREMENT PRIMARY KEY, pkm_id INT, pkm_name VARCHAR(255))";
-        connection.query(create_table, (error, response) => {
+          dbConfigPokesearch.query(create_table, (error, response) => {
             console.log(error || response);            
         });
         let query =
           "INSERT INTO pokemon (pkm_id, pkm_name) VALUES ?";
-        connection.query(query, [csvData], (error, response) => {
+          dbConfigPokesearch.query(query, [csvData], (error, response) => {
           console.log(error || response);
         });
       }
