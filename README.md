@@ -15,6 +15,7 @@
 { 
   "token": "", //bot token
   "cmdPrefix": "!", //prefix for discord command
+  "language": "", //availiable pokemons german,english,japanese
   "mainChannelID": "", //channel for the command
   "maddb_host": "", //mad db hostname
   "maddb_username": "", // mad db username
@@ -38,7 +39,7 @@ npm install
 Run the db import script
 
 ```sh
-node db_create.js
+node db_pokesearch.js
 ```
 
 Now start the bot
@@ -63,7 +64,10 @@ Verfügbar bis: 22:16:38 21.01.2020
 ```
 
 ## Additional IMPORTANT Infos:
-This Bot currently only support German Pokemon and its in an early development stage.
+This bot is in early development.
+Current supported languages for Pokemon: german, english, japanese
+
+If you already running a previous version, please drop your database first and import the new one.
 
 ## ToDo
 - ~~Fix conversation of despawn time to localtime~~

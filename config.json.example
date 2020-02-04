@@ -1,6 +1,7 @@
 {
   "token": "",
   "cmdPrefix": "!",
+  "language" : "",
   "mainChannelID": "",
   "maddb_host": "",
   "maddb_username": "",

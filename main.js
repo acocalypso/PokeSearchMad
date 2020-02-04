@@ -32,7 +32,7 @@ console.log('Starting PokeSearch');
 
 
 bot.on('ready', function(event){
-    console.log('Logged in as %s - %s\n', bot.username, bot.id);
+    console.log('Logged in as %s - %s\n - Language: %s', bot.username, bot.id,config.language);
 });
 
 
@@ -68,16 +68,17 @@ bot.on('message', function (user, userID, channelID, message, event) {
         if(pokemon !== ""){
             console.log("valPkm: " + pokemon);
             const connectionPokesearch = mysql.createConnection(dbConfigPokesearch);
-            connectionPokesearch.query('SELECT pkm_id, pkm_name from pokemon WHERE pkm_name LIKE "' + pokemon + '";', function(err1, rows1,fields1){
+            connectionPokesearch.query("SELECT * from pokemon_names WHERE " + config.language + " LIKE '" + pokemon + "'; ", function (err1, rows1, fields1) {
+                console.log(this.sql);
             if(rows1.length > 0){    
             rows1.forEach(function(row1){
                     console.log(row1);
-                    checkInDB(row1.pkm_id, row1.pkm_name);
+                    checkInDB(row1.id, pokemon);
                 });
             } else {
                 console.log("No Pokemon entry found... unknown Pokemon");
                 var sentToDiscord = {
-               'description': 'Fehler in der Eingabe...\n' + pokemon + " ist kein bekanntes Pokemon." ,
+               'description': 'Error...\n' + pokemon + " unknown." ,
                'title': 'UUPPPSSS!',
                'color': 15277667
                };
@@ -119,7 +120,7 @@ bot.on('message', function (user, userID, channelID, message, event) {
 
                     console.log("sending infos to Discord");
                     var sentToDiscord = {
-                        'description': 'Pokemon: ' + pkm_name + '\nWP: ' + row2.cp + '\nIV: ' + total_iv + '\nATK: ' + iv_atk + ' DEF: ' + iv_def + ' STA: ' + iv_sta + "\nVerfügbar bis: " + despawnTime,
+                        'description': 'Pokemon: ' + pkm_name + '\nWP: ' + row2.cp + '\nIV: ' + total_iv + '\nATK: ' + iv_atk + ' DEF: ' + iv_def + ' STA: ' + iv_sta + "\nDespawn: " + despawnTime,
                         'title': 'Google Maps',
                         'url': 'http://maps.google.com/maps?q=' + row2.latitude + ',' + row2.longitude,
                         'color': 15277667
@@ -132,7 +133,7 @@ bot.on('message', function (user, userID, channelID, message, event) {
             } else {
                 console.log("No Pokemon found");
                 var sentToDiscord = {
-                    'description': pkm_name + ' aktuell nicht vorhanden.',
+                    'description': pkm_name + ' not in availiable at the moment.',
                     'title': 'Sorry!',
                     'color': 15277667
                 };

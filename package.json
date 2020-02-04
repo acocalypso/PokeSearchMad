@@ -12,13 +12,14 @@
     "contributors": [],
     "dependencies": {
         "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
-        "fast-csv": "^4.0.2",
         "fs": "0.0.1-security",
         "moment": "^2.24.0",
-        "mysql2": "^2.1.0",
-        "sqlite3": "^4.1.1"
+        "mysql2": "^2.1.0"
     },
     "scripts": {
         "start": "node main.js"
+    },
+    "devDependencies": {
+        "mysql-import": "^3.0.6"
     }
 }
