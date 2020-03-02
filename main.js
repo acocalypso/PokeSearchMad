@@ -95,6 +95,7 @@ bot.on('message', function (user, userID, channelID, message, event) {
     
     function checkInDB(pkm_id, pkm_name) {
         console.log("checkInDB called");
+        discordResult = [];
         const connectionMAD = mysql.createConnection(dbConfigMAD);
         connectionMAD.query('SELECT * FROM pokemon WHERE pokemon_id = ' + pkm_id + " AND disappear_time > UTC_TIMESTAMP();", function (err2, rows2, fields2) {
             if (rows2.length > 0) {
@@ -148,8 +149,6 @@ bot.on('message', function (user, userID, channelID, message, event) {
             to: channelID,
             embed: results
         });
-        discordResult = [];
-
     };
 },
 function(error, response)
