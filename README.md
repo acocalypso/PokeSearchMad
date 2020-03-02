@@ -75,6 +75,7 @@ If you already running a previous version, please drop your database first and i
   iv
   wp
   level
+- localisation
 
 
 ## Contributing
