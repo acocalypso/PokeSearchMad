@@ -6,6 +6,9 @@ const Discord = require('discord.io');
 const config = require('./config.json');
 const mysql = require('mysql2');
 const moment = require('moment');
+const cmdPrefix = config.cmdPrefix;
+
+var discordResult = [];
 
 const bot = new Discord.Client({
     token: config.token,
@@ -38,8 +41,7 @@ bot.on('ready', function(event){
 
 bot.on('message', function (user, userID, channelID, message, event) {
     
-        if (message.substring(0, 1) === '!') {
-	        var args = message.substring(1).split(' ');
+        let args = message.substring(cmdPrefix.length).split(' ');
             var cmd = args[0];
             var argPkm = args[1];
             console.log("channelID: " + channelID);
@@ -62,7 +64,6 @@ bot.on('message', function (user, userID, channelID, message, event) {
                 });
             }
             }
-        }
     function validateDiscordArgs(pokemon)
     {
         if(pokemon !== ""){
@@ -105,11 +106,6 @@ bot.on('message', function (user, userID, channelID, message, event) {
                     var stillUtc = moment(spawnDate).format("YYYY-MM-DD HH:mm:ss");
                     var despawnTime = moment.utc(stillUtc).local().format("HH:mm:ss DD.MM.YYYY");
 
-                    console.log("spawnDate: " + spawnDate);
-                    console.log("stillUtc: " + stillUtc);
-                    console.log("despawnTime: " + despawnTime);
-
-
                     //Calculate IV
                     const iv_atk = row2.individual_attack;
                     const iv_def = row2.individual_defense;
@@ -117,19 +113,20 @@ bot.on('message', function (user, userID, channelID, message, event) {
                     const iv = (iv_atk + iv_def + iv_sta) / 45 * 100;
                     const total_iv = iv.toFixed(2);
 
-
-                    console.log("sending infos to Discord");
                     var sentToDiscord = {
                         'description': 'Pokemon: ' + pkm_name + '\nWP: ' + row2.cp + '\nIV: ' + total_iv + '\nATK: ' + iv_atk + ' DEF: ' + iv_def + ' STA: ' + iv_sta + "\nDespawn: " + despawnTime,
                         'title': 'Google Maps',
                         'url': 'http://maps.google.com/maps?q=' + row2.latitude + ',' + row2.longitude,
                         'color': 15277667
                     };
-                    bot.sendMessage({
-                        to: channelID,
-                        embed: sentToDiscord
-                    });
+                    discordResult.push(sentToDiscord);
                 });
+                console.log("ResultCount: %s", discordResult.length);
+                for (let i = 0; i < discordResult.length; i++) {
+                    setTimeout(() => {
+                        sentDiscordMessages(discordResult[i]);
+                    }, i * 1500);
+                }
             } else {
                 console.log("No Pokemon found");
                 var sentToDiscord = {
@@ -144,6 +141,14 @@ bot.on('message', function (user, userID, channelID, message, event) {
             }
             connectionMAD.end();
         });
+
+    };
+    function sentDiscordMessages(results){
+        bot.sendMessage({
+            to: channelID,
+            embed: results
+        });
+        discordResult = [];
 
     };
 },
