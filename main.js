@@ -67,7 +67,7 @@ bot.on('message', function (user, userID, channelID, message, event) {
     function validateDiscordArgs(pokemon)
     {
         if(pokemon !== ""){
-            console.log("valPkm: " + pokemon);
+            console.log("validatedPokemon: " + pokemon);
             const connectionPokesearch = mysql.createConnection(dbConfigPokesearch);
             connectionPokesearch.query("SELECT * from pokemon_names WHERE " + config.language + " LIKE '" + pokemon + "'; ", function (err1, rows1, fields1) {
                 console.log(this.sql);
@@ -113,9 +113,11 @@ bot.on('message', function (user, userID, channelID, message, event) {
                     const iv_sta = row2.individual_stamina;
                     const iv = (iv_atk + iv_def + iv_sta) / 45 * 100;
                     const total_iv = iv.toFixed(2);
-
+                    //get custome id
+                    const costume = row2.costume;
+                    const costume_padded = pad(costume, 2);
+                    //Change the id to 3 digit format
                     const pkm_id_padded = pad(pkm_id, 3);
-                    console.log("Padded Pokemon ID: %s", pkm_id_padded);
 
                     var sentToDiscord = {
                         'description': 'Pokemon: ' + pkm_name + '\nWP: ' + row2.cp + '\nIV: ' + total_iv + '\nATK: ' + iv_atk + ' DEF: ' + iv_def + ' STA: ' + iv_sta + "\nDespawn: " + despawnTime,
@@ -123,7 +125,7 @@ bot.on('message', function (user, userID, channelID, message, event) {
                         'url': 'http://maps.google.com/maps?q=' + row2.latitude + ',' + row2.longitude,
                         'color': 15277667,
                         'thumbnail': {
-                            'url': 'https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pkm_id_padded + '_00.png'
+                            'url': 'https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pkm_id_padded + '_00_' + costume_padded + '.png'
                         }
                     };
                     discordResult.push(sentToDiscord);
