@@ -69,15 +69,6 @@ Current supported languages for Pokemon: german, english, japanese
 
 If you already running a previous version, please drop your database first and import the new one.
 
-## ToDo
-- ~~Fix conversation of despawn time to localtime~~
-- add more search parameter:
-  iv
-  wp
-  level
-- localisation
-
-
 ## Contributing
 
 1. Fork it (<https://github.com/yourname/yourproject/fork>)
