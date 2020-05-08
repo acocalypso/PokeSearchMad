@@ -114,11 +114,17 @@ bot.on('message', function (user, userID, channelID, message, event) {
                     const iv = (iv_atk + iv_def + iv_sta) / 45 * 100;
                     const total_iv = iv.toFixed(2);
 
+                    const pkm_id_padded = pad(pkm_id, 3);
+                    console.log("Padded Pokemon ID: %s", pkm_id_padded);
+
                     var sentToDiscord = {
                         'description': 'Pokemon: ' + pkm_name + '\nWP: ' + row2.cp + '\nIV: ' + total_iv + '\nATK: ' + iv_atk + ' DEF: ' + iv_def + ' STA: ' + iv_sta + "\nDespawn: " + despawnTime,
                         'title': 'Google Maps',
                         'url': 'http://maps.google.com/maps?q=' + row2.latitude + ',' + row2.longitude,
-                        'color': 15277667
+                        'color': 15277667,
+                        'thumbnail': {
+                            'url': 'https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pkm_id_padded + '_00.png'
+                        }
                     };
                     discordResult.push(sentToDiscord);
                 });
@@ -144,7 +150,13 @@ bot.on('message', function (user, userID, channelID, message, event) {
         });
 
     };
-    function sentDiscordMessages(results){
+
+    function pad(n, length) {
+        var len = length - ('' + n).length;
+        return (len > 0 ? new Array(++len).join('0') : '') + n
+    }
+
+    function sentDiscordMessages(results,pkm_id) {
         bot.sendMessage({
             to: channelID,
             embed: results
@@ -155,10 +167,3 @@ function(error, response)
 {
     console.log(error);
 });
-
-
-
-
-                
-
-
