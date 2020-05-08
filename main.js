@@ -116,8 +116,18 @@ bot.on('message', function (user, userID, channelID, message, event) {
                     const costume_padded = pad(costume, 2);
                     //Change the id to 3 digit format
                     const pkm_id_padded = pad(pkm_id, 3);
+                    console.log("Padded Pkm_ID: %s - Padded costume_id: %s", pkm_id_padded, costume_padded);
+                    var sentNToDiscord = {
+                        'description': 'Pokemon: ' + pkm_name + '\nWP: ' + row2.cp + '\nIV: ' + total_iv + '\nATK: ' + iv_atk + ' DEF: ' + iv_def + ' STA: ' + iv_sta + "\nDespawn: " + despawnTime,
+                        'title': 'Google Maps',
+                        'url': 'http://maps.google.com/maps?q=' + row2.latitude + ',' + row2.longitude,
+                        'color': 15277667,
+                        'thumbnail': {
+                            'url': 'https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pkm_id_padded + '_00.png'
+                        }
+                    };
 
-                    var sentToDiscord = {
+                    var sentCToDiscord = {
                         'description': 'Pokemon: ' + pkm_name + '\nWP: ' + row2.cp + '\nIV: ' + total_iv + '\nATK: ' + iv_atk + ' DEF: ' + iv_def + ' STA: ' + iv_sta + "\nDespawn: " + despawnTime,
                         'title': 'Google Maps',
                         'url': 'http://maps.google.com/maps?q=' + row2.latitude + ',' + row2.longitude,
@@ -126,7 +136,14 @@ bot.on('message', function (user, userID, channelID, message, event) {
                             'url': 'https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pkm_id_padded + '_00_' + costume_padded + '.png'
                         }
                     };
-                    discordResult.push(sentToDiscord);
+                    if (costume_padded != 00) {
+                        console.log("Costumed Pokemon");
+                        discordResult.push(sentCToDiscord);
+                    }
+                    else {
+                        console.log("Normal Pokemon");
+                        discordResult.push(sentNToDiscord);
+                    }
                 });
                 console.log("ResultCount: %s", discordResult.length);
                 for (let i = 0; i < discordResult.length; i++) {
