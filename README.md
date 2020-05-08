@@ -67,7 +67,7 @@ Verfügbar bis: 22:16:38 21.01.2020
 This bot is in early development.
 Current supported languages for Pokemon: german, english, japanese
 
-If you already running a previous version, please drop your database first and import the new one.
+If you already running a previous version, please drop your pokeserach database first and import the new one.
 
 ## Contributing
 
