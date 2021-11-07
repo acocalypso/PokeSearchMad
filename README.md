@@ -1,3 +1,6 @@
+#DEPRICATED, OUTDATED and no longer SUPPORTED
+
+
 # PokeSearchMAD
 > Discord Bot to search for pokemon in the MAD DB
 
